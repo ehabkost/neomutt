@@ -1580,15 +1580,13 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
   if (!msg)
     return;
 
-  struct Menu *menu = mutt_menu_new(MENU_ATTACH);
-  struct MuttWindow *dlg = dialog_create_simple_index(menu, WT_DLG_ATTACH);
-  dlg->help_data = AttachHelp;
-  dlg->help_menu = MENU_ATTACH;
+  struct MuttWindow *dlg =
+      dialog_create_simple_index(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
 
+  struct Menu *menu = dlg->wdata;
   menu->title = _("Attachments");
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
-  mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_actx_new();
   actx->email = e;
@@ -1880,8 +1878,6 @@ void dlg_select_attachment(struct Mailbox *m, struct Email *e)
 
         mutt_actx_free(&actx);
 
-        mutt_menu_pop_current(menu);
-        mutt_menu_free(&menu);
         dialog_destroy_simple_index(&dlg);
         return;
     }
