@@ -1376,3 +1376,8 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 
   return parse_color(Colors, buf, s, err, parse_attr_spec, dry_run, false);
 }
+
+bool mutt_color_is_header(enum ColorId color_id)
+{
+    return color_id == MT_COLOR_HEADER || color_id == MT_COLOR_HDRDEFAULT;
+}
