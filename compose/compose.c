@@ -2131,13 +2131,12 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         if (!mx_mbox_open(m_attach, MUTT_READONLY))
         {
           mutt_error(_("Unable to open mailbox %s"), mutt_buffer_string(&fname));
-          mx_fastclose_mailbox(m_attach);
-          m_attach = NULL;
+          mx_fastclose_mailbox(&m_attach);
           break;
         }
         if (m_attach->msg_count == 0)
         {
-          mx_mbox_close(m_attach);
+          mx_mbox_close(&m_attach);
           mutt_error(_("No messages in that folder"));
           break;
         }
@@ -2192,7 +2191,7 @@ int mutt_compose_menu(struct Email *e, struct Buffer *fcc, struct Email *e_cur,
         {
           m_attach->readonly = old_readonly;
         }
-        mx_fastclose_mailbox(m_attach_new);
+        mx_fastclose_mailbox(&m_attach_new);
 
         /* Restore old $sort and $sort_aux */
         cs_subset_str_native_set(sub, "sort", old_sort, NULL);
