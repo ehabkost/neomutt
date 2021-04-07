@@ -1256,10 +1256,11 @@ int main(int argc, char *argv[], char *envp[])
       struct EventMailbox em = { m };
       notify_send(dlg->notify, NT_MAILBOX, NT_MAILBOX_SWITCH, &em);
 
-      mutt_index_menu(dlg, m);
+      m = mutt_index_menu(dlg, m);
       dialog_pop();
       index_pager_shutdown(dlg);
       mutt_window_free(&dlg);
+      mailbox_free(&m);
       log_queue_empty();
       repeat_error = false;
     }
