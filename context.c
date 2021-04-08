@@ -87,7 +87,7 @@ struct Context *ctx_new(struct Mailbox *m)
   notify_observer_add(m->notify, NT_MAILBOX, ctx_mailbox_observer, ctx);
 
   ctx->mailbox = m;
-  ctx->threads = mutt_thread_ctx_init(m);
+  ctx->threads = mutt_thread_ctx_init();
   ctx->msg_in_pager = -1;
   ctx->collapsed = false;
   ctx_update(ctx);
@@ -138,7 +138,7 @@ void ctx_update(struct Context *ctx)
   m->vcount = 0;
   m->changed = false;
 
-  mutt_clear_threads(ctx->threads);
+  mutt_clear_threads(ctx->mailbox, ctx->threads);
 
   struct Email *e = NULL;
   for (int msgno = 0; msgno < m->msg_count; msgno++)
@@ -319,7 +319,7 @@ int ctx_mailbox_observer(struct NotifyCallback *nc)
   switch (nc->event_subtype)
   {
     case NT_MAILBOX_CLOSED:
-      mutt_clear_threads(ctx->threads);
+      mutt_clear_threads(ctx->mailbox, ctx->threads);
       ctx_cleanup(ctx);
       break;
     case NT_MAILBOX_INVALID:
